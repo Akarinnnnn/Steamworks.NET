@@ -74,7 +74,7 @@ namespace Steamworks {
 
 		public static void StringToByteArrayUTF8(string str, byte[] outArrayBuffer, int outArrayBufferSize)
 		{
-			outArrayBuffer = new byte[outArrayBufferSize];
+			//outArrayBuffer = new byte[outArrayBufferSize];
 			int length = Encoding.UTF8.GetBytes(str, 0, str.Length, outArrayBuffer, 0);
 			outArrayBuffer[length] = 0;
 		}
