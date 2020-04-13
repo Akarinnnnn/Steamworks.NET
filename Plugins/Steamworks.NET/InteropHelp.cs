@@ -76,7 +76,13 @@ namespace Steamworks {
 		{
 			//outArrayBuffer = new byte[outArrayBufferSize];
 			int length = Encoding.UTF8.GetBytes(str, 0, str.Length, outArrayBuffer, 0);
-			outArrayBuffer[length] = 0;
+#if NETSTANDARD2_1
+			System.Index index = length >= outArrayBuffer.Length ? ^1 : length;
+#else
+			int index = length >= outArrayBuffer.Length ? outArrayBuffer.Length - 1 : length;
+#endif
+			outArrayBuffer[index] = 0;
+			//outArrayBuffer[] = 0;
 		}
 
 		// This is for 'const char *' arguments which we need to ensure do not get GC'd while Steam is using them.
