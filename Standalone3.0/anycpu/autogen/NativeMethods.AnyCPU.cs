@@ -29,12 +29,13 @@ namespace Steamworks
 					// and try load again, this is for the case when steam native is not in default `dlopen()` search path
 					// but in the same directory as the assembly.
 					string extension;
-					string nixPrefix = "lib";
+					string libFilenamePrefix = "lib";
 					if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 						extension = ".dylib";
-					else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+					else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 						extension = ".dll";
-					else
+						libFilenamePrefix = ""; // no prefix is applied on Windows
+					} else
 						extension = ".so"; // I can't imagine what else platforms other than linux that
 										   // Steamworks.NET.AnyCPU will run on, but let's be future proof
 
@@ -50,7 +51,7 @@ namespace Steamworks
 						searchDirectory = AppDomain.CurrentDomain.BaseDirectory;
 					}
 
-					string path = Path.Combine(searchDirectory, Path.ChangeExtension(nixPrefix + libraryName, extension));
+					string path = Path.Combine(searchDirectory, Path.ChangeExtension(libFilenamePrefix + libraryName, extension));
 
 					// second chance search, not caring failures anymore
 					NativeLibrary.TryLoad(path, assembly, null, out lib);
